@@ -11,3 +11,37 @@ db.criaturas.insertMany([
 ]);
 
 print("Criaturas insertadas correctamente en la base de datos MisionCriaturas");
+
+// Consultas finales (Read)
+
+// Todas las criaturas
+print("Todas las criaturas:");
+printjson(db.criaturas.find().toArray());
+
+// Criaturas por habitat
+print("Criaturas del Bosque Encantado:");
+printjson(db.criaturas.find({ habitat: "Bosque Encantado" }).toArray());
+
+// Criaturas con nivel_peligro > 8
+print("Criaturas con nivel_peligro mayor a 8:");
+printjson(db.criaturas.find({ nivel_peligro: { $gt: 8 } }).toArray());
+
+// Actualizaciones (Update)
+
+// Añadir nueva habilidad a una criatura
+db.criaturas.updateOne(
+  { nombre: "Hada del Bosque" },
+  { $push: { habilidades: "control de plantas" } }
+);
+
+// Incrementar nivel_peligro de todas las criaturas de un habitat
+db.criaturas.updateMany(
+  { habitat: "Montañas" },
+  { $inc: { nivel_peligro: 1 } }
+);
+
+print("Actualizaciones realizadas correctamente.");
+
+// Consultas finales para verificar cambios
+print("Todas las criaturas actualizadas:");
+printjson(db.criaturas.find().toArray());
