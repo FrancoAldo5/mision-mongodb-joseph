@@ -1,0 +1,57 @@
+use("bestiario");
+
+const guardian = db.guardianes.insertOne({// Inserción válida
+  nombre: "Joseph",
+  rango: "maestro",
+  password_acceso: "Franco123",
+  nivel: 10,
+  inventario: [
+    { nombre_item: "Armadura", cantidad: 1 },
+    { nombre_item: "Espada", cantidad: 2 }
+  ]
+});
+
+use("bestiario");
+db.guardianes.insertOne({//Insercion inválida por el rango
+  //error: Document failed validation
+  nombre: "Veigar",
+  rango: "Hechicero",
+  password_acceso: "Mistico",
+  nivel: 5,
+  inventario: [{ nombre_item: "Varita", cantidad: 1 }]
+});
+
+
+
+use("bestiario");
+db.guardianes.find({}, { _id: 1, nombre: 1 });//Se usa esto para identificar el id del guardián insertado válido
+
+
+
+use("bestiario");//Insercion válida de criatura con id de guardián correcto
+db.criaturas.insertOne({
+  nombre: "Golem de Lava",
+  habitat: "Olimpo de fuego",
+  nivel_peligro: 9,
+  es_legendaria: true,
+  habilidades: ["Volar", "Escupir fuego"],
+  ficha_veterinaria: {
+    salud: "Óptima",
+    ultima_revision: new Date("2025-05-20")
+  },
+  id_guardian: ObjectId("") 
+});
+
+use("bestiario");//insercion inválida por falta de habilidades
+//error: Document failed validation
+db.criaturas.insertOne({
+  nombre: "Hidra del Lago",
+  habitat: "Aguas Profundas",
+  nivel_peligro: 8,
+  es_legendaria: false,
+  habilidades: [],
+  ficha_veterinaria: {
+    ultima_revision: new Date("2025-06-10")
+  },
+  id_guardian: ObjectId("")
+});

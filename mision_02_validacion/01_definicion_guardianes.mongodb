@@ -1,0 +1,44 @@
+use("bestiario");
+db.guardianes.drop();//borrar la colección si existe
+db.createCollection("guardianes",{//definición de la colección con sus valdaciones
+    validator: {
+        $jsonSchema: {//definición del esquema de JSON
+            bsonType: "object",
+            required: ["nombre", "rango","password_acceso","inventario"],//campos obligatorios
+            properties : {
+                nombre:{//validación del campo nombre
+                    bsonType: "string",
+                },
+                rango: {//validación del campo rango con valores específicos
+                    bsonType: "string",
+                    enum: ["aprendiz", "maestro", "gran maestro"],
+                },
+                password_acceso:{//validación del campo password con digitos requeridos
+                    bsonType: "string",
+                    pattern: "^(?=.*[A-Z])(?=.*\\d).{8,}$",
+                },
+                nivel:{//validación del campo nivel con rango obligatorio
+                    bsonType: "number",
+                    minimum: 1,
+                    maximum: 99,
+                },
+                inventario:{//validación del campo inventario como arreglo para objetos
+                    bsonType: "array",
+                    items:{
+                        bsonType: "object",
+                        required: ["nombre_item","cantidad"],
+                        properties:{
+                            nombre_item:{
+                                bsonType: "string",
+                            },
+                            cantidad:{
+                                bsonType: "number",
+                                minimum: 1,
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+});
